@@ -63,8 +63,10 @@ export function Graph({
   }, [loading, theme]);
 
 
-  return (
-    <div ref={chartRef} style={{ width: "55rem", height: "35rem", ...style }} />
+  return (  
+    <>
+    <div ref={chartRef} style={{ width: "60rem", height: "30rem", ...style }} />
+    </>
   );
 }
 
