@@ -13,7 +13,7 @@ export interface ReactEChartsProps {
 }
 
 
-export function Graph({
+export function EChartsComponent({
   option,
   style,
   settings,
@@ -71,5 +71,5 @@ export function Graph({
 }
 
 
-export default Graph;
+export default EChartsComponent;
 

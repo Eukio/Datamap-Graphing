@@ -1,10 +1,11 @@
-import { useEffect, useState, useTransition } from 'react';
-import Graph from './components/Graph.tsx';
-import './App.css';
+import { useEffect, useState} from 'react';
+import React from 'react'
+import EChartsComponent from './EChartsComponent';
 import * as d3 from 'd3';
 
 
 const filename: string = 'test.csv';
+
 
 interface Data {
   name: string;
@@ -12,34 +13,25 @@ interface Data {
 }
 
 
-const searchedValues: Set<string> = new Set([
-  'ctOutdoorCoolRequestedDemand',
-  'ctAHHeatRequestedDemand',
-  'ctOutdoorHeatRequestedDemand',
-  'ctIFCHeatRequestedDemandPercent',
-  'ctIFCCoolRequestedDemandPercent',
-  'ctOutdoorDeHumidificationRequestedDemand',
-  'ctIFCHumRequestedDemandPercent'
-]);
+interface PreformanceChartProps {
+  selectedValues: Set<string>;
+}
 
 
-function App() {
+export function PreformanceChart({ selectedValues }: PreformanceChartProps) {
   const [chartOption, setChartOption] = useState({});
   const [dataSets, setDataSets] = useState<Data[]>([]);
-  const[isLoading, startTransition] = useTransition();
-
 
 
   useEffect(() => {
-   
     d3.csv(filename).then((loadedData: { columns: any[]; forEach: (arg0: (row: any) => void) => void; }) => {
       const columns = loadedData.columns.filter((col: string) =>
-        searchedValues.has(col)
+        selectedValues.has(col)
       );
-
+     
       const parsedData: Data[] = columns.map((name:string) => {
         const values: Array<[string, number]> = [];
-      
+     
         loadedData.forEach((row: { [x: string]: any; }) => {
           const timeStamp = row['record_time'];
           const yValue = row[name];
@@ -47,33 +39,31 @@ function App() {
             values.push([timeStamp, parseFloat(yValue)]);
           }
         });
-
         return {
           name,
           values
         };
       });
-      setDataSets(parsedData);
+      setDataSets(parsedData);      
     });
-
-  }, []);
-
+  }, [selectedValues]);
 
 
   useEffect(() => {
     if (dataSets.length === 0) return;
-     startTransition(() =>{
+   
     setChartOption({
       animation: false,
       tooltip: { trigger: 'axis' },
       legend: {
-          bottom: 0,
+          bottom:  '0px',
           orient:'horizontal',
          data: dataSets.map((d) => d.name)},
       grid: {
-        left: '10%',
-        right: '10%',
-        bottom: '30%',
+        left: '16px',
+        right: '16px',
+        bottom: '140px',
+     
         containLabel: true
       },
       toolbox: {
@@ -98,32 +88,33 @@ function App() {
           type: 'slider',
           show: true,
           realtime: false,
-          bottom:60
+          bottom: '100px'
         }
       ],
-      series: dataSets.map((obj) => ({
+      series: dataSets.map((obj, i) => ({
         name: obj.name,
         type: 'line',
         large: true,
         largeThreshold: 10000,
         data: obj.values,
-        symbol: 'none'
+        symbol: 'none',
+        yAxisIndex: i%2
       }))
     });
-      });
   }, [dataSets]);
 
 
   return (
     <>
       <div>
-        {isLoading && <p>Loading Graph...</p>}
-        <Graph option={chartOption} />
+        <EChartsComponent option={chartOption} />
       </div>
     </>
   );
 }
 
 
-export default App;
+export default PreformanceChart;
+
+
 
