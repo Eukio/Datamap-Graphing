@@ -65,7 +65,7 @@ export function EChartsComponent({
 
   return (  
     <>
-    <div ref={chartRef} style={{ width: "60rem", height: "30rem", ...style }} />
+    <div ref={chartRef} style={{ width: "55rem", height: "30rem", ...style }} />
     </>
   );
 }
