@@ -148,7 +148,7 @@ export default function DatamapList({selectedValues, setSelectedValues}: Datamap
         height={480}
         width={340}
         itemSize={46}
-        itemCount={200}
+        itemCount={6000}
         overscanCount={5}
       >
         {renderRow}
