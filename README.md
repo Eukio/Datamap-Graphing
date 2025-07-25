@@ -1,4 +1,4 @@
-# Preformance Chart (Test App)
+# Performance Chart (Test App)
 ## Using React with TypeScript, graph display of thermostats performance metrics overtime for the Daikin One Dealer Admin Portal
 The purpose of this project is to aid support team users by creating a performance chart display for a thermostat within the Daikin One Dealer Admin Portal.
 
